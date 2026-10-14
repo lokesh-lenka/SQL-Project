@@ -1,0 +1,475 @@
+PART 1 — Basic Queries
+----------------------
+
+1. Display all customers
+
+SELECT * 
+FROM customers;
+
+2. Display customer names and cities
+
+SELECT customer_name, city
+FROM customers;
+
+3. Display restaurants with rating above 4.5
+
+SELECT restaurant_name, rating
+FROM restaurants
+WHERE rating > 4.5;
+
+4. Display available food items
+SELECT food_name, price
+FROM food_items
+WHERE availability = 'Available';
+
+5. Display food items whose price is greater than 200
+SELECT food_name, price
+FROM food_items
+WHERE price > 200;
+
+6. Display customers from Visakhapatnam
+SELECT customer_name, phone
+FROM customers
+WHERE city = 'Visakhapatnam';
+
+7. Display restaurants in Hyderabad
+SELECT restaurant_name, rating
+FROM restaurants
+WHERE city = 'Hyderabad';
+
+8. Display food items between 150 and 300
+SELECT food_name, price
+FROM food_items
+WHERE price BETWEEN 150 AND 300;
+
+9. Display customers whose name starts with 'S'
+SELECT *
+FROM customers
+WHERE customer_name LIKE 'S%';
+
+10. Display restaurants in descending order of rating
+SELECT restaurant_name, rating
+FROM restaurants
+ORDER BY rating DESC;
+
+UPDATE orders
+SET order_date = '2026-09-01 10:30:00'
+WHERE order_id = 1;
+
+PART 2 — Aggregate Functions
+----------------------------
+
+11. Find the maximum food price
+SELECT MAX(price) AS maximum_price
+FROM food_items;
+
+12. Find the minimum food price
+SELECT MIN(price) AS minimum_price
+FROM food_items;
+
+13. Find the average food price
+SELECT AVG(price) AS average_price
+FROM food_items;
+
+14. Find total number of customers
+SELECT COUNT(*) AS total_customers
+FROM customers;
+
+15. Find total number of restaurants
+SELECT COUNT(*) AS total_restaurants
+FROM restaurants;
+
+16. Find total order amount
+SELECT SUM(total_amount) AS total_order_amount
+FROM orders;
+
+17. Find average order amount
+SELECT AVG(total_amount) AS average_order_amount
+FROM orders;
+
+18. Find highest order amount
+SELECT MAX(total_amount) AS highest_order
+FROM orders;
+
+19. Find lowest order amount
+SELECT MIN(total_amount) AS lowest_order
+FROM orders;
+
+20. Count restaurants in each city
+SELECT city, COUNT(*) AS restaurant_count
+FROM restaurants
+GROUP BY city;
+
+PART 3 — JOINS
+--------------
+
+21. Display customers and their orders
+SELECT 
+    c.customer_name,
+    o.order_id,
+    o.order_date,
+    o.total_amount
+FROM customers c
+JOIN orders o
+ON c.customer_id = o.customer_id;
+
+22. Display order details with customer names and restaurant names
+SELECT 
+    o.order_id,
+    c.customer_name,
+    r.restaurant_name,
+    o.total_amount,
+    o.order_status
+FROM orders o
+JOIN customers c
+ON o.customer_id = c.customer_id
+JOIN restaurants r
+ON o.restaurant_id = r.restaurant_id;
+
+23. Display food items with restaurant names
+SELECT 
+    f.food_name,
+    f.price,
+    r.restaurant_name
+FROM food_items f
+JOIN restaurants r
+ON f.restaurant_id = r.restaurant_id;
+
+24. Display food items with their category names
+SELECT 
+    f.food_name,
+    f.price,
+    c.category_name
+FROM food_items f
+JOIN categories c
+ON f.category_id = c.category_id;
+
+25. Display restaurant name and its food items
+SELECT 
+    r.restaurant_name,
+    f.food_name,
+    f.price
+FROM restaurants r
+JOIN food_items f
+ON r.restaurant_id = f.restaurant_id;
+
+26. Display order items with food names
+SELECT 
+    oi.order_id,
+    f.food_name,
+    oi.quantity,
+    oi.price
+FROM order_items oi
+JOIN food_items f
+ON oi.food_id = f.food_id;
+
+27. Display orders with delivery partner details
+SELECT 
+    o.order_id,
+    o.order_date,
+    d.partner_name,
+    d.vehicle_type,
+    o.order_status
+FROM orders o
+JOIN delivery_partners d
+ON o.delivery_id = d.delivery_id;
+
+28. Display payment details along with customer name
+SELECT 
+    p.payment_id,
+    c.customer_name,
+    p.payment_method,
+    p.amount,
+    p.payment_status
+FROM payments p
+JOIN orders o
+ON p.order_id = o.order_id
+JOIN customers c
+ON o.customer_id = c.customer_id;
+
+29. Display customer reviews and restaurant names
+SELECT 
+    c.customer_name,
+    r.restaurant_name,
+    rv.rating,
+    rv.review_text
+FROM reviews rv
+JOIN customers c
+ON rv.customer_id = c.customer_id
+JOIN restaurants r
+ON rv.restaurant_id = r.restaurant_id;
+
+30. Display order, customer, food and payment details
+SELECT 
+    o.order_id,
+    c.customer_name,
+    f.food_name,
+    oi.quantity,
+    p.payment_method,
+    p.amount
+FROM orders o
+JOIN customers c
+ON o.customer_id = c.customer_id
+JOIN order_items oi
+ON o.order_id = oi.order_id
+JOIN food_items f
+ON oi.food_id = f.food_id
+JOIN payments p
+ON o.order_id = p.order_id;
+
+PART 4 — GROUP BY & HAVING
+---------------------------
+
+31. Find total orders placed by each customer
+SELECT 
+    c.customer_name,
+    COUNT(o.order_id) AS total_orders
+FROM customers c
+JOIN orders o
+ON c.customer_id = o.customer_id
+GROUP BY c.customer_id, c.customer_name;
+
+32. Find total sales generated by each restaurant
+SELECT 
+    r.restaurant_name,
+    SUM(o.total_amount) AS total_sales
+FROM restaurants r
+JOIN orders o
+ON r.restaurant_id = o.restaurant_id
+GROUP BY r.restaurant_id, r.restaurant_name;
+
+33. Find average rating of each restaurant from reviews
+SELECT 
+    r.restaurant_name,
+    AVG(rv.rating) AS average_rating
+FROM restaurants r
+JOIN reviews rv
+ON r.restaurant_id = rv.restaurant_id
+GROUP BY r.restaurant_id, r.restaurant_name;
+
+34. Display restaurants having average review rating greater than 4
+SELECT 
+    r.restaurant_name,
+    AVG(rv.rating) AS average_rating
+FROM restaurants r
+JOIN reviews rv
+ON r.restaurant_id = rv.restaurant_id
+GROUP BY r.restaurant_id, r.restaurant_name
+HAVING AVG(rv.rating) > 4;
+
+35. Find total quantity of food ordered for each food item
+SELECT 
+    f.food_name,
+    SUM(oi.quantity) AS total_quantity
+FROM food_items f
+JOIN order_items oi
+ON f.food_id = oi.food_id
+GROUP BY f.food_id, f.food_name;
+
+PART 5 — SUBQUERIES
+-------------------
+
+36. Find food items whose price is greater than the average food price
+SELECT food_name, price
+FROM food_items
+WHERE price > (
+    SELECT AVG(price)
+    FROM food_items
+);
+
+37. Find the restaurant having the highest rating
+SELECT restaurant_name, rating
+FROM restaurants
+WHERE rating = (
+    SELECT MAX(rating)
+    FROM restaurants
+);
+
+38. Find customers who placed orders above the average order amount
+SELECT DISTINCT customer_name
+FROM customers
+WHERE customer_id IN (
+    SELECT customer_id
+    FROM orders
+    WHERE total_amount > (
+        SELECT AVG(total_amount)
+        FROM orders
+    )
+);
+
+PART 6 — ADVANCED / PROJECT-LEVEL
+---------------------------------
+
+39. Display order details with discount applied
+SELECT 
+    o.order_id,
+    c.customer_name,
+    o.total_amount,
+    oc.discount_amount,
+    o.total_amount - oc.discount_amount AS final_amount
+FROM orders o
+JOIN customers c
+ON o.customer_id = c.customer_id
+JOIN order_coupons oc
+ON o.order_id = oc.order_id;
+
+40. Find the most expensive food item in each restaurant
+SELECT 
+    r.restaurant_name,
+    f.food_name,
+    f.price
+FROM restaurants r
+JOIN food_items f
+ON r.restaurant_id = f.restaurant_id
+WHERE f.price = (
+    SELECT MAX(f2.price)
+    FROM food_items f2
+    WHERE f2.restaurant_id = f.restaurant_id
+);
+
+41. VIEW – Customer Order Details
+CREATE VIEW customer_order_details AS
+SELECT 
+    c.customer_id,
+    c.customer_name,
+    o.order_id,
+    o.order_date,
+    o.total_amount,
+    o.order_status
+FROM customers c
+JOIN orders o
+ON c.customer_id = o.customer_id;
+
+View display:
+
+SELECT * 
+FROM customer_order_details;
+
+42. VIEW – Restaurant Food Details
+CREATE VIEW restaurant_food_details AS
+SELECT
+    r.restaurant_name,
+    f.food_name,
+    f.price,
+    f.availability
+FROM restaurants r
+JOIN food_items f
+ON r.restaurant_id = f.restaurant_id;
+SELECT *
+FROM restaurant_food_details;
+43. VIEW – Order Payment Details
+CREATE VIEW order_payment_details AS
+SELECT
+    o.order_id,
+    o.order_date,
+    o.total_amount,
+    p.payment_method,
+    p.amount,
+    p.payment_status
+FROM orders o
+JOIN payments p
+ON o.order_id = p.order_id;
+SELECT *
+FROM order_payment_details;
+
+44. STORED PROCEDURE – Display All Customers
+DELIMITER //
+
+CREATE PROCEDURE GetAllCustomers()
+BEGIN
+    SELECT *
+    FROM customers;
+END //
+
+DELIMITER ;
+
+Run:
+
+CALL GetAllCustomers();
+
+45. STORED PROCEDURE – Find Orders of a Customer
+DELIMITER //
+
+CREATE PROCEDURE GetCustomerOrders(IN cid INT)
+BEGIN
+    SELECT *
+    FROM orders
+    WHERE customer_id = cid;
+END //
+
+DELIMITER ;
+
+Run:
+
+CALL GetCustomerOrders(5);
+46. STORED PROCEDURE – Find Food Above Given Price
+DELIMITER //
+
+CREATE PROCEDURE GetFoodAbovePrice(IN amount DECIMAL(10,2))
+BEGIN
+    SELECT food_name, price
+    FROM food_items
+    WHERE price > amount;
+END //
+
+DELIMITER ;
+
+Run:
+
+CALL GetFoodAbovePrice(200);
+
+47. TRIGGER – Prevent Negative Food Price
+DELIMITER //
+
+CREATE TRIGGER check_food_price
+BEFORE INSERT ON food_items
+FOR EACH ROW
+BEGIN
+    IF NEW.price < 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Food price cannot be negative';
+    END IF;
+END //
+
+DELIMITER ;
+
+Test:
+
+INSERT INTO food_items
+VALUES (16,1,1,'Test Food',-100,'Available');
+
+It will show an error because price cannot be negative.
+
+48. TRIGGER – Prevent Invalid Rating
+DELIMITER //
+
+CREATE TRIGGER check_review_rating
+BEFORE INSERT ON reviews
+FOR EACH ROW
+BEGIN
+    IF NEW.rating < 1 OR NEW.rating > 5 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Rating must be between 1 and 5';
+    END IF;
+END //
+
+DELIMITER ;
+
+Test:
+
+INSERT INTO reviews
+VALUES
+(16,1,1,7,'Test review','2026-09-20');
+
+49. DATETIME – Display Current Date and Time
+SELECT NOW() AS current_datetime;
+
+50. DATETIME – Display Order Date Information
+SELECT
+    order_id,
+    order_date,
+    YEAR(order_date) AS order_year,
+    MONTH(order_date) AS order_month,
+    DAY(order_date) AS order_day
+FROM orders;
+
