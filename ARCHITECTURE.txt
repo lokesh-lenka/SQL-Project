@@ -1,0 +1,95 @@
+ARCHITECTURE
+------------
+
+Users
+   ↓
+Food Management Application
+   ↓
+SQL Queries
+   ↓
+MySQL Database
+   ↓
+Customer | Restaurant | Food | Orders
+   ↓
+Payments | Delivery | Reviews | Coupons
+   ↓
+Reports & Analysis
+
+
+                    FOOD MANAGEMENT SYSTEM
+                            │
+                            ▼
+                  ┌─────────────────────┐
+                  │      USERS          │
+                  │ Customers / Admin   │
+                  └──────────┬──────────┘
+                             │
+                             ▼
+                  ┌─────────────────────┐
+                  │   APPLICATION /     │
+                  │   FOOD MANAGEMENT   │
+                  │      SYSTEM         │
+                  └──────────┬──────────┘
+                             │
+                             ▼
+                  ┌─────────────────────┐
+                  │     SQL QUERIES     │
+                  │ SELECT / JOIN /     │
+                  │ GROUP BY / HAVING   │
+                  │ SUBQUERIES          │
+                  └──────────┬──────────┘
+                             │
+                             ▼
+                  ┌─────────────────────┐
+                  │     MySQL DATABASE  │
+                  └──────────┬──────────┘
+                             │
+          ┌──────────────────┼──────────────────┐
+          │                  │                  │
+          ▼                  ▼                  ▼
+   ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+   │  Customer   │    │ Restaurant  │    │    Food     │
+   │ Management  │    │ Management  │    │ Management  │
+   └─────────────┘    └─────────────┘    └─────────────┘
+          │                  │                  │
+          └──────────────────┼──────────────────┘
+                             │
+                             ▼
+                  ┌─────────────────────┐
+                  │  ORDER MANAGEMENT   │
+                  │ Orders & Order Items │
+                  └──────────┬──────────┘
+                             │
+             ┌───────────────┼───────────────┐
+             │               │               │
+             ▼               ▼               ▼
+       ┌──────────┐    ┌────────────┐   ┌───────────┐
+       │ Payments │    │ Delivery   │   │  Reviews  │
+       └──────────┘    │ Partners   │   └───────────┘
+                       └────────────┘
+                             │
+                             ▼
+                     ┌──────────────┐
+                     │   Coupons    │
+                     │ & Discounts  │
+                     └──────────────┘
+
+
+Overview
+--------
+
+CUSTOMERS
+    │
+    ├── ADDRESSES
+    │
+    └── ORDERS ─────── PAYMENTS
+          │
+          ├── ORDER_ITEMS ─── FOOD_ITEMS ─── CATEGORIES
+          │                       │
+          │                       └── RESTAURANTS
+          │
+          ├── DELIVERY_PARTNERS
+          │
+          └── ORDER_COUPONS ─── COUPONS
+
+CUSTOMERS ─── REVIEWS ─── RESTAURANTS

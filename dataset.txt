@@ -1,0 +1,341 @@
+CREATE DATABASE food_management;
+USE food_management;
+
+-- 1. CUSTOMERS
+CREATE TABLE customers (
+    customer_id INT PRIMARY KEY,
+    customer_name VARCHAR(50),
+    email VARCHAR(100),
+    phone VARCHAR(15),
+    city VARCHAR(30)
+);
+
+INSERT INTO customers VALUES
+(1,'Rahul','rahul@gmail.com','9876500001','Visakhapatnam'),
+(2,'Priya','priya@gmail.com','9876500002','Hyderabad'),
+(3,'Kiran','kiran@gmail.com','9876500003','Vijayawada'),
+(4,'Sneha','sneha@gmail.com','9876500004','Visakhapatnam'),
+(5,'Arjun','arjun@gmail.com','9876500005','Chennai'),
+(6,'Divya','divya@gmail.com','9876500006','Bangalore'),
+(7,'Ravi','ravi@gmail.com','9876500007','Hyderabad'),
+(8,'Anjali','anjali@gmail.com','9876500008','Visakhapatnam'),
+(9,'Suresh','suresh@gmail.com','9876500009','Vijayawada'),
+(10,'Meena','meena@gmail.com','9876500010','Chennai'),
+(11,'Vamsi','vamsi@gmail.com','9876500011','Bangalore'),
+(12,'Pooja','pooja@gmail.com','9876500012','Hyderabad'),
+(13,'Naveen','naveen@gmail.com','9876500013','Visakhapatnam'),
+(14,'Swathi','swathi@gmail.com','9876500014','Vijayawada'),
+(15,'Rohit','rohit@gmail.com','9876500015','Chennai');
+
+
+-- 2. RESTAURANTS
+CREATE TABLE restaurants (
+    restaurant_id INT PRIMARY KEY,
+    restaurant_name VARCHAR(100),
+    city VARCHAR(30),
+    rating DECIMAL(2,1),
+    contact VARCHAR(15)
+);
+
+INSERT INTO restaurants VALUES
+(1,'Spice Hub','Visakhapatnam',4.5,'9000000001'),
+(2,'Food Palace','Hyderabad',4.2,'9000000002'),
+(3,'Tasty Treat','Vijayawada',4.0,'9000000003'),
+(4,'Urban Bites','Visakhapatnam',4.6,'9000000004'),
+(5,'Royal Kitchen','Chennai',4.3,'9000000005'),
+(6,'Fresh Feast','Bangalore',4.1,'9000000006'),
+(7,'Andhra Ruchulu','Hyderabad',4.7,'9000000007'),
+(8,'Pizza Corner','Visakhapatnam',4.0,'9000000008'),
+(9,'Burger House','Vijayawada',4.4,'9000000009'),
+(10,'South Spice','Chennai',4.5,'9000000010'),
+(11,'Cafe Delight','Bangalore',4.2,'9000000011'),
+(12,'Biryani Bowl','Hyderabad',4.8,'9000000012'),
+(13,'Green Leaf','Visakhapatnam',4.1,'9000000013'),
+(14,'Street Kitchen','Vijayawada',3.9,'9000000014'),
+(15,'Food Factory','Chennai',4.3,'9000000015');
+
+
+-- 3. CATEGORIES
+CREATE TABLE categories (
+    category_id INT PRIMARY KEY,
+    category_name VARCHAR(50),
+    description VARCHAR(100)
+);
+
+INSERT INTO categories VALUES
+(1,'Biryani','Rice based dishes'),
+(2,'Pizza','Italian style pizza'),
+(3,'Burger','Different types of burgers'),
+(4,'South Indian','Traditional South Indian food'),
+(5,'North Indian','North Indian dishes'),
+(6,'Chinese','Chinese food items'),
+(7,'Desserts','Sweet dishes'),
+(8,'Beverages','Cold and hot drinks'),
+(9,'Starters','Veg and non-veg starters'),
+(10,'Rice','Rice based meals'),
+(11,'Noodles','Different noodles'),
+(12,'Sandwich','Fresh sandwiches'),
+(13,'Salads','Healthy salads'),
+(14,'Ice Cream','Ice cream varieties'),
+(15,'Snacks','Quick snacks');
+
+
+-- 4. FOOD_ITEMS
+CREATE TABLE food_items (
+    food_id INT PRIMARY KEY,
+    restaurant_id INT,
+    category_id INT,
+    food_name VARCHAR(100),
+    price DECIMAL(10,2),
+    availability VARCHAR(20),
+    FOREIGN KEY (restaurant_id) REFERENCES restaurants(restaurant_id),
+    FOREIGN KEY (category_id) REFERENCES categories(category_id)
+);
+
+INSERT INTO food_items VALUES
+(1,1,1,'Chicken Biryani',220,'Available'),
+(2,2,2,'Veg Pizza',250,'Available'),
+(3,3,3,'Chicken Burger',180,'Available'),
+(4,4,4,'Masala Dosa',100,'Available'),
+(5,5,5,'Paneer Butter Masala',230,'Available'),
+(6,6,6,'Veg Manchurian',190,'Available'),
+(7,7,1,'Mutton Biryani',320,'Available'),
+(8,8,2,'Chicken Pizza',300,'Available'),
+(9,9,3,'Veg Burger',150,'Available'),
+(10,10,4,'Idly Sambar',80,'Available'),
+(11,11,7,'Chocolate Cake',140,'Available'),
+(12,12,1,'Special Biryani',280,'Available'),
+(13,13,13,'Greek Salad',160,'Available'),
+(14,14,11,'Chicken Noodles',200,'Available'),
+(15,15,8,'Cold Coffee',120,'Available');
+
+
+-- 5. DELIVERY_PARTNERS
+CREATE TABLE delivery_partners (
+    delivery_id INT PRIMARY KEY,
+    partner_name VARCHAR(50),
+    phone VARCHAR(15),
+    vehicle_type VARCHAR(30),
+    status VARCHAR(20)
+);
+
+INSERT INTO delivery_partners VALUES
+(1,'Ramesh','9010000001','Bike','Available'),
+(2,'Sathish','9010000002','Bike','Busy'),
+(3,'Mahesh','9010000003','Bike','Available'),
+(4,'Naresh','9010000004','Scooter','Busy'),
+(5,'Karthik','9010000005','Bike','Available'),
+(6,'Manoj','9010000006','Bike','Available'),
+(7,'Praveen','9010000007','Scooter','Busy'),
+(8,'Ajay','9010000008','Bike','Available'),
+(9,'Tarun','9010000009','Bike','Available'),
+(10,'Vijay','9010000010','Scooter','Busy'),
+(11,'Harish','9010000011','Bike','Available'),
+(12,'Srinivas','9010000012','Bike','Available'),
+(13,'Rakesh','9010000013','Scooter','Busy'),
+(14,'Lokesh','9010000014','Bike','Available'),
+(15,'Ganesh','9010000015','Bike','Available');
+
+
+-- 6. ADDRESSES
+CREATE TABLE addresses (
+    address_id INT PRIMARY KEY,
+    customer_id INT,
+    house_no VARCHAR(20),
+    street VARCHAR(100),
+    city VARCHAR(30),
+    pincode VARCHAR(10),
+    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
+);
+
+INSERT INTO addresses VALUES
+(1,1,'12-1','MVP Colony','Visakhapatnam','530017'),
+(2,2,'8-22','Kukatpally','Hyderabad','500072'),
+(3,3,'15-4','Benz Circle','Vijayawada','520010'),
+(4,4,'21-5','Dwaraka Nagar','Visakhapatnam','530016'),
+(5,5,'44-2','T Nagar','Chennai','600017'),
+(6,6,'18-9','Whitefield','Bangalore','560066'),
+(7,7,'10-3','Ameerpet','Hyderabad','500016'),
+(8,8,'6-8','Gajuwaka','Visakhapatnam','530026'),
+(9,9,'20-1','Patamata','Vijayawada','520010'),
+(10,10,'32-7','Velachery','Chennai','600042'),
+(11,11,'14-5','Electronic City','Bangalore','560100'),
+(12,12,'5-2','Madhapur','Hyderabad','500081'),
+(13,13,'9-4','Maddilapalem','Visakhapatnam','530013'),
+(14,14,'16-6','Governorpet','Vijayawada','520002'),
+(15,15,'25-3','Anna Nagar','Chennai','600040');
+
+
+-- 7. ORDERS
+CREATE TABLE orders (
+    order_id INT PRIMARY KEY,
+    customer_id INT,
+    restaurant_id INT,
+    delivery_id INT,
+    order_date DATE,
+    total_amount DECIMAL(10,2),
+    order_status VARCHAR(30),
+    FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
+    FOREIGN KEY (restaurant_id) REFERENCES restaurants(restaurant_id),
+    FOREIGN KEY (delivery_id) REFERENCES delivery_partners(delivery_id)
+);
+
+INSERT INTO orders VALUES
+(1,1,1,1,'2026-09-01',440,'Delivered'),
+(2,2,2,2,'2026-09-02',500,'Delivered'),
+(3,3,3,3,'2026-09-03',360,'Delivered'),
+(4,4,4,4,'2026-09-04',200,'Delivered'),
+(5,5,5,5,'2026-09-05',460,'Delivered'),
+(6,6,6,6,'2026-09-06',380,'Delivered'),
+(7,7,7,7,'2026-09-07',640,'Delivered'),
+(8,8,8,8,'2026-09-08',600,'Delivered'),
+(9,9,9,9,'2026-09-09',300,'Delivered'),
+(10,10,10,10,'2026-09-10',160,'Delivered'),
+(11,11,11,11,'2026-09-11',280,'Delivered'),
+(12,12,12,12,'2026-09-12',560,'Delivered'),
+(13,13,13,13,'2026-09-13',320,'Delivered'),
+(14,14,14,14,'2026-09-14',400,'Delivered'),
+(15,15,15,15,'2026-09-15',240,'Delivered');
+
+
+-- 8. ORDER_ITEMS
+CREATE TABLE order_items (
+    order_item_id INT PRIMARY KEY,
+    order_id INT,
+    food_id INT,
+    quantity INT,
+    price DECIMAL(10,2),
+    FOREIGN KEY (order_id) REFERENCES orders(order_id),
+    FOREIGN KEY (food_id) REFERENCES food_items(food_id)
+);
+
+INSERT INTO order_items VALUES
+(1,1,1,2,220),
+(2,2,2,2,250),
+(3,3,3,2,180),
+(4,4,4,2,100),
+(5,5,5,2,230),
+(6,6,6,2,190),
+(7,7,7,2,320),
+(8,8,8,2,300),
+(9,9,9,2,150),
+(10,10,10,2,80),
+(11,11,11,2,140),
+(12,12,12,2,280),
+(13,13,13,2,160),
+(14,14,14,2,200),
+(15,15,15,2,120);
+
+
+-- 9. PAYMENTS
+CREATE TABLE payments (
+    payment_id INT PRIMARY KEY,
+    order_id INT,
+    payment_method VARCHAR(30),
+    payment_date DATE,
+    amount DECIMAL(10,2),
+    payment_status VARCHAR(20),
+    FOREIGN KEY (order_id) REFERENCES orders(order_id)
+);
+
+INSERT INTO payments VALUES
+(1,1,'UPI','2026-09-01',440,'Success'),
+(2,2,'Card','2026-09-02',500,'Success'),
+(3,3,'Cash','2026-09-03',360,'Success'),
+(4,4,'UPI','2026-09-04',200,'Success'),
+(5,5,'Card','2026-09-05',460,'Success'),
+(6,6,'UPI','2026-09-06',380,'Success'),
+(7,7,'Cash','2026-09-07',640,'Success'),
+(8,8,'UPI','2026-09-08',600,'Success'),
+(9,9,'Card','2026-09-09',300,'Success'),
+(10,10,'UPI','2026-09-10',160,'Success'),
+(11,11,'Cash','2026-09-11',280,'Success'),
+(12,12,'Card','2026-09-12',560,'Success'),
+(13,13,'UPI','2026-09-13',320,'Success'),
+(14,14,'Cash','2026-09-14',400,'Success'),
+(15,15,'UPI','2026-09-15',240,'Success');
+
+
+-- 10. REVIEWS
+CREATE TABLE reviews (
+    review_id INT PRIMARY KEY,
+    customer_id INT,
+    restaurant_id INT,
+    rating INT,
+    review_text VARCHAR(200),
+    review_date DATE,
+    FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
+    FOREIGN KEY (restaurant_id) REFERENCES restaurants(restaurant_id)
+);
+
+INSERT INTO reviews VALUES
+(1,1,1,5,'Excellent biryani','2026-09-02'),
+(2,2,2,4,'Good pizza','2026-09-03'),
+(3,3,3,4,'Tasty burger','2026-09-04'),
+(4,4,4,5,'Dosa was excellent','2026-09-05'),
+(5,5,5,4,'Good food','2026-09-06'),
+(6,6,6,4,'Nice Chinese food','2026-09-07'),
+(7,7,7,5,'Amazing biryani','2026-09-08'),
+(8,8,8,4,'Pizza was good','2026-09-09'),
+(9,9,9,5,'Very tasty burger','2026-09-10'),
+(10,10,10,4,'Good breakfast','2026-09-11'),
+(11,11,11,5,'Cake was delicious','2026-09-12'),
+(12,12,12,5,'Best biryani','2026-09-13'),
+(13,13,13,4,'Healthy and fresh','2026-09-14'),
+(14,14,14,4,'Good noodles','2026-09-15'),
+(15,15,15,5,'Great coffee','2026-09-16');
+
+
+-- 11. COUPONS
+CREATE TABLE coupons (
+    coupon_id INT PRIMARY KEY,
+    coupon_code VARCHAR(30),
+    discount_percent INT,
+    min_order_amount DECIMAL(10,2),
+    expiry_date DATE
+);
+
+INSERT INTO coupons VALUES
+(1,'WELCOME10',10,200,'2026-12-31'),
+(2,'FOOD20',20,500,'2026-11-30'),
+(3,'SAVE15',15,300,'2026-12-15'),
+(4,'FIRST50',50,400,'2026-10-31'),
+(5,'YUMMY10',10,250,'2026-12-20'),
+(6,'TASTY20',20,600,'2026-11-15'),
+(7,'BIRYANI15',15,300,'2026-12-10'),
+(8,'PIZZA25',25,500,'2026-10-30'),
+(9,'BURGER10',10,200,'2026-12-25'),
+(10,'NEWUSER30',30,400,'2026-11-20'),
+(11,'FESTIVE20',20,700,'2026-12-31'),
+(12,'DEAL15',15,350,'2026-11-25'),
+(13,'MEGA10',10,500,'2026-12-05'),
+(14,'SPECIAL25',25,600,'2026-10-25'),
+(15,'FLAT50',50,1000,'2026-12-31');
+
+
+-- 12. ORDER_COUPONS
+CREATE TABLE order_coupons (
+    order_coupon_id INT PRIMARY KEY,
+    order_id INT,
+    coupon_id INT,
+    discount_amount DECIMAL(10,2),
+    FOREIGN KEY (order_id) REFERENCES orders(order_id),
+    FOREIGN KEY (coupon_id) REFERENCES coupons(coupon_id)
+);
+
+INSERT INTO order_coupons VALUES
+(1,1,1,44),
+(2,2,2,100),
+(3,3,3,54),
+(4,4,1,20),
+(5,5,5,46),
+(6,6,3,57),
+(7,7,7,96),
+(8,8,8,150),
+(9,9,9,30),
+(10,10,1,16),
+(11,11,5,28),
+(12,12,6,112),
+(13,13,3,48),
+(14,14,12,60),
+(15,15,5,24);
